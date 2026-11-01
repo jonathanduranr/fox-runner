@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 80" width="140" height="80">
+  <defs>
+    <linearGradient id="tailWarm" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#D75A1A"/>
+      <stop offset="50%" stop-color="#F38038"/>
+      <stop offset="100%" stop-color="#F59B56"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Cola Gigante Esponjosa de Nube -->
+  <!-- Base se une al cuerpo en (135, 52) -->
+  <path d="M 135 52 C 110 58, 85 75, 50 72 C 26 70, 4 52, 6 34 C 8 16, 32 8, 62 12 C 92 16, 120 36, 135 52 Z" fill="url(#tailWarm)"/>
+
+  <!-- Punta Blanca Esponjosa en forma de Nube / Malvavisco -->
+  <path d="M 52 56 C 36 62, 18 52, 6 34 C 8 16, 26 12, 44 14 C 38 22, 50 26, 42 34 C 52 38, 54 48, 52 56 Z" fill="#FFFFFF"/>
+</svg>

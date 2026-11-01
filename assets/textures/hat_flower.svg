@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 40" width="60" height="40">
+  <!-- Corona de Flores Silvestres -->
+  <path d="M 6 28 Q 30 18 54 28" stroke="#58D68D" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <!-- Flores -->
+  <circle cx="16" cy="24" r="5" fill="#FF7675"/>
+  <circle cx="16" cy="24" r="2" fill="#FFEAA7"/>
+  <circle cx="30" cy="20" r="6" fill="#74B9FF"/>
+  <circle cx="30" cy="20" r="2.5" fill="#FFEAA7"/>
+  <circle cx="44" cy="24" r="5" fill="#FD79A8"/>
+  <circle cx="44" cy="24" r="2" fill="#FFEAA7"/>
+  <!-- Hojitas -->
+  <ellipse cx="23" cy="22" rx="4" ry="2" fill="#2ECC71" transform="rotate(-20 23 22)"/>
+  <ellipse cx="37" cy="22" rx="4" ry="2" fill="#2ECC71" transform="rotate(20 37 22)"/>
+</svg>

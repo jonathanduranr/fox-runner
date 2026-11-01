@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/log_obstacle.gd" id="1_log"]
+[ext_resource type="Texture2D" path="res://assets/textures/log_obstacle.svg" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_log"]
+size = Vector2(50, 24)
+
+[node name="LogObstacle" type="Area2D"]
+collision_layer = 8
+collision_mask = 1
+script = ExtResource("1_log")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -18)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("2_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_log")

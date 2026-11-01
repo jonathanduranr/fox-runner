@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 54" width="32" height="54">
+  <defs>
+    <linearGradient id="legFrontGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F38038"/>
+      <stop offset="70%" stop-color="#D75A1A"/>
+      <stop offset="100%" stop-color="#242B2E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Pata Delantera Tierna con calcetín oscuro en la almohadilla -->
+  <!-- Conexión superior en (16, 6) -->
+  <path d="M 10 6 C 10 3, 22 3, 22 6 C 21 20, 23 36, 21 46 C 20 50, 10 50, 9 46 C 8 36, 10 20, 10 6 Z" fill="url(#legFrontGrad)"/>
+
+  <!-- Almohadilla / Pezuña redondeada -->
+  <ellipse cx="15" cy="48" rx="6.5" ry="3.5" fill="#242B2E"/>
+  <!-- Calcetín blanco intermedio -->
+  <path d="M 9.5 40 C 13 38, 18 38, 21.5 40 L 21 44 C 18 43, 13 43, 9.5 44 Z" fill="#FFFFFF" opacity="0.9"/>
+</svg>

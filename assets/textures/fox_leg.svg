@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 50" width="30" height="50">
+  <!-- Minimalist Cute Paw -->
+  <path d="M 8 5 C 15 5, 20 15, 18 30 C 17 40, 22 45, 18 48 C 14 50, 8 50, 7 47 C 6 40, 5 25, 8 5 Z" fill="#D35400"/>
+  <!-- Dark/White Sock tip -->
+  <path d="M 17 42 C 16 46, 20 47, 18 48 C 14 50, 8 50, 7 47 C 6 43, 11 41, 17 42 Z" fill="#2C3E50"/>
+</svg>

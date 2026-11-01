@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 50" width="60" height="50">
+  <defs>
+    <linearGradient id="crownGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F1C40F"/>
+      <stop offset="100%" stop-color="#D4AC0D"/>
+    </linearGradient>
+  </defs>
+  <!-- Corona dorada -->
+  <polygon points="6,42 10,18 20,28 30,12 40,28 50,18 54,42" fill="url(#crownGrad)"/>
+  <rect x="6" y="38" width="48" height="6" rx="2" fill="#B7950B"/>
+  <!-- Joyas -->
+  <circle cx="30" cy="12" r="3" fill="#E74C3C"/>
+  <circle cx="10" cy="18" r="2.5" fill="#3498DB"/>
+  <circle cx="50" cy="18" r="2.5" fill="#2ECC71"/>
+  <circle cx="30" cy="41" r="2" fill="#E74C3C"/>
+</svg>

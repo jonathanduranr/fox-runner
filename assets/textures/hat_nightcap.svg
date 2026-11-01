@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 60" width="70" height="60">
+  <defs>
+    <linearGradient id="nightGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3498DB"/>
+      <stop offset="100%" stop-color="#1B4F72"/>
+    </linearGradient>
+  </defs>
+  <!-- Gorro de Dormir a rayas con pompón -->
+  <path d="M 8 48 Q 28 10 58 26 C 50 35 40 46 12 50 Z" fill="url(#nightGrad)"/>
+  <!-- Rayas blancas -->
+  <path d="M 20 40 Q 30 22 42 22" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M 32 38 Q 42 28 50 26" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <!-- Borde de peluche blanco en la base -->
+  <rect x="6" y="46" width="38" height="8" rx="4" fill="#FFFFFF"/>
+  <!-- Pompón esponjoso en la punta caída -->
+  <circle cx="58" cy="28" r="7" fill="#FFFFFF"/>
+</svg>

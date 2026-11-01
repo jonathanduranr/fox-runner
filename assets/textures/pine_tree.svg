@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 160" width="80" height="160">
+  <!-- Minimalist Pine Tree Silhouette -->
+  <!-- Trunk -->
+  <rect x="36" y="125" width="8" height="35" rx="3" fill="#2C3E50" opacity="0.6"/>
+
+  <!-- Tier 3 (Bottom) -->
+  <polygon points="40,75 10,130 70,130" fill="#34495E" opacity="0.8"/>
+
+  <!-- Tier 2 (Middle) -->
+  <polygon points="40,45 18,90 62,90" fill="#34495E" opacity="0.9"/>
+
+  <!-- Tier 1 (Top) -->
+  <polygon points="40,15 25,55 55,55" fill="#34495E"/>
+</svg>

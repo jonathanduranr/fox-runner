@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/fox.gd" id="1_fox"]
+[ext_resource type="Texture2D" path="res://assets/textures/zen_fox.png" id="2_zen"]
+[ext_resource type="Texture2D" path="res://assets/textures/star.svg" id="3_star"]
+[ext_resource type="Texture2D" path="res://assets/textures/sun.svg" id="4_light"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 24.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_magnet"]
+radius = 150.0
+
+[node name="Fox" type="CharacterBody2D"]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_fox")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("CircleShape2D_body")
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="GlideParticles" type="CPUParticles2D" parent="Visuals"]
+position = Vector2(-55, -28)
+emitting = false
+amount = 16
+lifetime = 0.55
+explosiveness = 0.1
+randomness = 0.3
+texture = ExtResource("3_star")
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector2(-1, 0.2)
+spread = 20.0
+gravity = Vector2(0, 50)
+initial_velocity_min = 40.0
+initial_velocity_max = 85.0
+scale_amount_min = 0.1
+scale_amount_max = 0.22
+color = Color(1, 0.92, 0.6, 0.85)
+
+[node name="ScarfLine" type="Line2D" parent="Visuals"]
+width = 6.0
+default_color = Color(0.92, 0.25, 0.2, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Body" type="Sprite2D" parent="Visuals"]
+position = Vector2(0, -34)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("2_zen")
+
+[node name="Hat" type="Sprite2D" parent="Visuals"]
+visible = false
+position = Vector2(34, -62)
+scale = Vector2(0.5, 0.5)
+
+[node name="MagnetArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MagnetArea"]
+shape = SubResource("CircleShape2D_magnet")
+
+[node name="NightLight" type="PointLight2D" parent="."]
+position = Vector2(0, -25)
+enabled = false
+color = Color(1, 0.9, 0.75, 1)
+energy = 0.0
+texture = ExtResource("4_light")
+texture_scale = 3.0

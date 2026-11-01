@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 60" width="90" height="60">
+  <defs>
+    <linearGradient id="barkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8D6E63"/>
+      <stop offset="100%" stop-color="#5D4037"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Tronco de madera acostado -->
+  <path d="M 15 54 C 10 54, 8 42, 10 32 C 12 22, 18 20, 24 20 L 76 20 C 82 20, 86 30, 84 42 C 82 52, 78 54, 72 54 Z" fill="url(#barkGrad)"/>
+
+  <!-- Corte lateral del tronco con anillos de edad -->
+  <ellipse cx="18" cy="36" rx="8" ry="14" fill="#D7CCC8"/>
+  <ellipse cx="18" cy="36" rx="5" ry="9" stroke="#8D6E63" stroke-width="1.5" fill="none"/>
+  <ellipse cx="18" cy="36" rx="2" ry="4" fill="#8D6E63"/>
+
+  <!-- Musgo verde tierno encima -->
+  <path d="M 28 20 C 32 15, 42 16, 46 20 C 50 17, 60 17, 66 20 Z" fill="#66BB6A"/>
+  <!-- Pequeño brote con hojitas -->
+  <path d="M 52 16 C 52 10, 56 8, 60 10 C 60 14, 56 16, 52 16 Z" fill="#81C784"/>
+</svg>

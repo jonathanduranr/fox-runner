@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 54" width="40" height="54">
+  <defs>
+    <linearGradient id="legBackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F38038"/>
+      <stop offset="60%" stop-color="#D75A1A"/>
+      <stop offset="100%" stop-color="#242B2E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Pata Trasera con muslo / corvejón curvado (anatomía real y tierna) -->
+  <!-- Conexión superior en (20, 6) -->
+  <path d="M 12 6 C 24 4, 34 10, 32 24 C 30 34, 25 38, 24 46 C 23 50, 14 50, 13 46 C 13 40, 16 34, 18 26 C 14 26, 8 20, 8 14 C 8 8, 10 6, 12 6 Z" fill="url(#legBackGrad)"/>
+
+  <!-- Almohadilla / Pezuña redondeada -->
+  <ellipse cx="18" cy="48" rx="6.5" ry="3.5" fill="#242B2E"/>
+  <!-- Calcetín blanco intermedio -->
+  <path d="M 14 41 C 17 39, 21 39, 24 41 L 23.5 44.5 C 21 43.5, 17 43.5, 14 44.5 Z" fill="#FFFFFF" opacity="0.9"/>
+</svg>
