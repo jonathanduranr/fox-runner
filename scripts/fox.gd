@@ -45,26 +45,26 @@ const HEAD_SOCKETS: Dictionary = {
 	]
 }
 
-# Calibración individual para que cada prenda calce cómoda y exacta en las orejitas
+# Calibración individual anatómica para que cada prenda calce cómoda y natural en la cabecita
 const HAT_CONFIGS: Dictionary = {
 	"crown": {
-		"offset": Vector2(0.0, -10.0),
-		"scale": Vector2(0.48, 0.48),
-		"rot": 0.0
+		"offset": Vector2(0.0, -6.0),
+		"scale": Vector2(0.19, 0.19),
+		"rot": deg_to_rad(2.0)
 	},
 	"flower": {
-		"offset": Vector2(0.0, -8.0),
-		"scale": Vector2(0.48, 0.48),
+		"offset": Vector2(0.0, -4.0),
+		"scale": Vector2(0.22, 0.22),
 		"rot": 0.0
 	},
 	"nightcap": {
-		"offset": Vector2(-3.5, -12.0),
-		"scale": Vector2(0.46, 0.46),
-		"rot": deg_to_rad(-6.0)
+		"offset": Vector2(-1.5, -5.0),
+		"scale": Vector2(0.22, 0.22),
+		"rot": deg_to_rad(-5.0)
 	},
 	"wizard": {
-		"offset": Vector2(-1.0, -15.0),
-		"scale": Vector2(0.46, 0.46),
+		"offset": Vector2(-1.0, -8.0),
+		"scale": Vector2(0.21, 0.21),
 		"rot": deg_to_rad(-3.0)
 	}
 }
