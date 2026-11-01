@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/fox.gd" id="1_fox"]
 [ext_resource type="SpriteFrames" path="res://scenes/fox_sprite_frames.tres" id="2_frames"]
 [ext_resource type="Texture2D" path="res://assets/textures/star.svg" id="3_star"]
 [ext_resource type="Texture2D" path="res://assets/textures/sun.svg" id="4_light"]
+[ext_resource type="Texture2D" path="res://assets/textures/light_glow.png" id="5_glow"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 24.0
@@ -21,6 +22,13 @@ position = Vector2(0, -24)
 shape = SubResource("CircleShape2D_body")
 
 [node name="Visuals" type="Node2D" parent="."]
+
+[node name="NightAura" type="Sprite2D" parent="Visuals"]
+modulate = Color(1, 0.9, 0.65, 0)
+z_index = -1
+position = Vector2(0, -30)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("5_glow")
 
 [node name="GlideParticles" type="CPUParticles2D" parent="Visuals"]
 position = Vector2(-55, -28)
@@ -65,5 +73,7 @@ position = Vector2(0, -25)
 enabled = false
 color = Color(1, 0.9, 0.75, 1)
 energy = 0.0
-texture = ExtResource("4_light")
-texture_scale = 3.0
+range_z_min = -2
+range_z_max = 5
+texture = ExtResource("5_glow")
+texture_scale = 1.8

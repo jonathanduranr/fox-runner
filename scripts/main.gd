@@ -87,7 +87,7 @@ func apply_day_night_mode(night: bool, animated: bool = true) -> void:
 	is_night = night
 	hud.set_mode_icon(is_night)
 	parallax.apply_mode(is_night, animated)
-	fox.set_night_mode(is_night)
+	fox.set_night_mode(is_night, animated)
 	
 	var ground_col = ground_generator.night_ground_color if is_night else ground_generator.day_ground_color
 	var line_col = ground_generator.night_line_color if is_night else ground_generator.day_line_color

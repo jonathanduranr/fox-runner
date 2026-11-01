@@ -73,6 +73,7 @@ const HAT_CONFIGS: Dictionary = {
 @onready var anim_sprite: AnimatedSprite2D = $Visuals/AnimSprite
 @onready var hat_sprite: Sprite2D = $Visuals/Hat
 @onready var glide_particles: CPUParticles2D = $Visuals/GlideParticles
+@onready var night_aura: Sprite2D = $Visuals/NightAura
 @onready var night_light: PointLight2D = $NightLight
 @onready var magnet_area: Area2D = $MagnetArea
 
@@ -234,9 +235,17 @@ func _on_magnet_area_entered(area: Area2D) -> void:
 func _on_star_collected() -> void:
 	star_collected.emit()
 
-func set_night_mode(is_night: bool) -> void:
+func set_night_mode(is_night: bool, animated: bool = true) -> void:
 	if night_light:
 		night_light.enabled = is_night
-		var tw = create_tween()
-		var target_energy = 0.9 if is_night else 0.0
-		tw.tween_property(night_light, "energy", target_energy, 0.5)
+		var target_energy = 0.7 if is_night else 0.0
+		var target_alpha = 0.35 if is_night else 0.0
+		if animated:
+			var tw = create_tween().set_parallel(true)
+			tw.tween_property(night_light, "energy", target_energy, 0.5)
+			if night_aura:
+				tw.tween_property(night_aura, "modulate:a", target_alpha, 0.5)
+		else:
+			night_light.energy = target_energy
+			if night_aura:
+				night_aura.modulate.a = target_alpha
