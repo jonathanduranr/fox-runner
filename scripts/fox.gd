@@ -29,7 +29,7 @@ var hat_textures: Dictionary = {
 }
 
 @onready var visuals: Node2D = $Visuals
-@onready var body_sprite: Sprite2D = $Visuals/Body
+@onready var anim_sprite: AnimatedSprite2D = $Visuals/AnimSprite
 @onready var hat_sprite: Sprite2D = $Visuals/Hat
 @onready var scarf_line: Line2D = $Visuals/ScarfLine
 @onready var glide_particles: CPUParticles2D = $Visuals/GlideParticles
@@ -48,7 +48,7 @@ func _ready() -> void:
 		
 	# Inicializar puntos de la bufanda
 	scarf_points.clear()
-	var neck_pos = Vector2(4, -30)
+	var neck_pos = Vector2(2, -28)
 	for i in range(SCARF_LENGTH):
 		scarf_points.append(neck_pos - Vector2(i * SCARF_SEGMENT_DIST, 0))
 	scarf_line.points = PackedVector2Array(scarf_points)
@@ -62,11 +62,14 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor():
 		is_gliding = false
 		glide_timer = 0.0
+		anim_sprite.play("run")
+		anim_sprite.speed_scale = run_speed / 340.0
 		if glide_particles:
 			glide_particles.emitting = false
 			
 		if jump_just_pressed:
 			velocity.y = jump_velocity
+			anim_sprite.play("jump")
 			if AudioManager:
 				AudioManager.play_jump()
 			visuals.scale = Vector2(0.85, 1.25)
@@ -75,6 +78,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		if jump_held and velocity.y > 0.0:
 			is_gliding = true
+			anim_sprite.play("glide")
 			glide_timer += delta
 			glided_time.emit(glide_timer)
 			velocity.y = move_toward(velocity.y, glide_fall_speed, 850.0 * delta)
@@ -82,6 +86,7 @@ func _physics_process(delta: float) -> void:
 				glide_particles.emitting = true
 		else:
 			is_gliding = false
+			anim_sprite.play("jump")
 			velocity.y += gravity * delta
 			if glide_particles:
 				glide_particles.emitting = false
@@ -99,23 +104,19 @@ func _physics_process(delta: float) -> void:
 func update_visuals_and_scarf(delta: float) -> void:
 	var t = Time.get_ticks_msec() / 1000.0
 	
-	# Rotación sutil según pendiente o vuelo
 	if is_on_floor():
 		var floor_normal = get_floor_normal()
 		var target_rot = floor_normal.angle() + PI * 0.5
 		visuals.rotation = lerp_angle(visuals.rotation, target_rot * 0.6, 12.0 * delta)
-		# Trote suave
-		body_sprite.position.y = -34.0 + sin(t * 18.0) * 2.5
 	else:
 		if is_gliding:
 			visuals.rotation = lerp_angle(visuals.rotation, 0.06, 6.0 * delta)
-			body_sprite.position.y = lerp(body_sprite.position.y, -36.0, 6.0 * delta)
 		else:
 			var pitch = clamp(velocity.y / 600.0, -0.35, 0.35)
 			visuals.rotation = lerp_angle(visuals.rotation, pitch, 6.0 * delta)
 			
 	# Simulación de la bufanda ondeante detrás del cuello
-	var neck_origin = Vector2(4, -30) + Vector2(0, body_sprite.position.y + 34.0)
+	var neck_origin = Vector2(2, -28)
 	scarf_points[0] = neck_origin
 	
 	for i in range(1, SCARF_LENGTH):
@@ -127,8 +128,6 @@ func update_visuals_and_scarf(delta: float) -> void:
 		var wave_amp = 3.5 if is_gliding else 5.0
 		var wave_y = sin(t * wave_freq - float(i) * 0.8) * wave_amp
 		
-		# Mantener distancia entre segmentos con inercia hacia atrás
-		var dir = (curr - prev).normalized()
 		var target_pos = prev - Vector2(SCARF_SEGMENT_DIST, -wave_y * 0.3)
 		scarf_points[i] = curr.lerp(target_pos, 16.0 * delta)
 		
@@ -137,6 +136,7 @@ func update_visuals_and_scarf(delta: float) -> void:
 func launch_spring(bounce_force: float = -680.0) -> void:
 	velocity.y = bounce_force
 	is_gliding = false
+	anim_sprite.play("jump")
 	visuals.scale = Vector2(0.8, 1.35)
 	var tw = create_tween()
 	tw.tween_property(visuals, "scale", Vector2(1.0, 1.0), 0.25)
@@ -167,7 +167,6 @@ func equip_hat(hat_id: String) -> void:
 	else:
 		hat_sprite.texture = hat_textures[hat_id]
 		hat_sprite.visible = true
-		# Pop jugoso al ponerse sombrero
 		hat_sprite.scale = Vector2(0.8, 0.8)
 		var tw = create_tween()
 		tw.tween_property(hat_sprite, "scale", Vector2(0.5, 0.5), 0.2).set_trans(Tween.TRANS_BACK)

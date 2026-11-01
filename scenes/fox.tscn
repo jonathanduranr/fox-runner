@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/fox.gd" id="1_fox"]
-[ext_resource type="Texture2D" path="res://assets/textures/zen_fox.png" id="2_zen"]
+[ext_resource type="SpriteFrames" path="res://scenes/fox_sprite_frames.tres" id="2_frames"]
 [ext_resource type="Texture2D" path="res://assets/textures/star.svg" id="3_star"]
 [ext_resource type="Texture2D" path="res://assets/textures/sun.svg" id="4_light"]
 
@@ -48,14 +48,16 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="Body" type="Sprite2D" parent="Visuals"]
-position = Vector2(0, -34)
-scale = Vector2(0.35, 0.35)
-texture = ExtResource("2_zen")
+[node name="AnimSprite" type="AnimatedSprite2D" parent="Visuals"]
+position = Vector2(0, -32)
+scale = Vector2(0.55, 0.55)
+sprite_frames = ExtResource("2_frames")
+animation = &"run"
+autoplay = "run"
 
 [node name="Hat" type="Sprite2D" parent="Visuals"]
 visible = false
-position = Vector2(34, -62)
+position = Vector2(30, -56)
 scale = Vector2(0.5, 0.5)
 
 [node name="MagnetArea" type="Area2D" parent="."]
