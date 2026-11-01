@@ -12,6 +12,7 @@ signal hat_equipped(hat_id: String)
 @onready var tutorial_label: Label = $TutorialLabel
 
 # Panel del Guardarropa
+@onready var wardrobe_backdrop: ColorRect = $WardrobeBackdrop
 @onready var wardrobe_panel: Panel = $WardrobeModal
 @onready var close_wardrobe_btn: Button = $WardrobeModal/CloseButton
 
@@ -56,6 +57,14 @@ func _ready() -> void:
 	wardrobe_button.pressed.connect(_on_wardrobe_button_pressed)
 	close_wardrobe_btn.pressed.connect(_on_close_wardrobe_pressed)
 	wardrobe_panel.visible = false
+	if wardrobe_backdrop:
+		wardrobe_backdrop.visible = false
+		wardrobe_backdrop.gui_input.connect(func(event):
+			if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+				_on_close_wardrobe_pressed()
+			elif event is InputEventScreenTouch and event.pressed:
+				_on_close_wardrobe_pressed()
+		)
 	celebration_banner.visible = false
 	
 	setup_wardrobe_buttons()
@@ -102,10 +111,10 @@ func update_hat_button_text(hat_id: String, btn: Button) -> void:
 
 func _on_hat_item_clicked(hat_id: String, btn: Button) -> void:
 	if unlocked_hats.get(hat_id, false):
+		_on_close_wardrobe_pressed()
 		hat_equipped.emit(hat_id)
 		if AudioManager:
 			AudioManager.play_celebration()
-		_on_close_wardrobe_pressed()
 	else:
 		var price = hat_prices.get(hat_id, 10)
 		if total_stars >= price:
@@ -113,13 +122,13 @@ func _on_hat_item_clicked(hat_id: String, btn: Button) -> void:
 			unlocked_hats[hat_id] = true
 			update_star_display()
 			update_hat_button_text(hat_id, btn)
+			_on_close_wardrobe_pressed()
 			hat_equipped.emit(hat_id)
 			if AudioManager:
 				AudioManager.play_celebration()
-			_on_close_wardrobe_pressed()
 		else:
 			btn.text = " ¡Faltan estrellas!"
-			var tw = create_tween()
+			var tw = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 			tw.tween_interval(1.2)
 			tw.tween_callback(func(): update_hat_button_text(hat_id, btn))
 
@@ -223,12 +232,18 @@ func _on_mode_button_pressed() -> void:
 	mode_toggle_requested.emit()
 
 func _on_wardrobe_button_pressed() -> void:
+	if wardrobe_backdrop:
+		wardrobe_backdrop.visible = true
 	wardrobe_panel.visible = true
 	wardrobe_panel.scale = Vector2(0.8, 0.8)
-	var tw = create_tween()
+	var tw = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tw.tween_property(wardrobe_panel, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_BACK)
+	get_tree().paused = true
 
 func _on_close_wardrobe_pressed() -> void:
-	var tw = create_tween()
+	get_tree().paused = false
+	if wardrobe_backdrop:
+		wardrobe_backdrop.visible = false
+	var tw = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 	tw.tween_property(wardrobe_panel, "scale", Vector2(0.8, 0.8), 0.15)
 	tw.tween_callback(func(): wardrobe_panel.visible = false)

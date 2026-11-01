@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" path="res://assets/textures/hat_wizard.png" id="9_wizard"]
 
 [node name="HUD" type="CanvasLayer"]
+process_mode = 3
 script = ExtResource("1_hud")
 
 [node name="TopBar" type="Control" parent="."]
@@ -159,6 +160,15 @@ text = "¡Misión Lograda!
 +15 Estrellas de regalo"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="WardrobeBackdrop" type="ColorRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.45)
 
 [node name="WardrobeModal" type="Panel" parent="."]
 visible = false
