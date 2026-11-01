@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="chestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F39C12"/>
+      <stop offset="100%" stop-color="#D35400"/>
+    </linearGradient>
+    <linearGradient id="hatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34495E"/>
+      <stop offset="100%" stop-color="#1A252F"/>
+    </linearGradient>
+  </defs>
+  <!-- Base circle background -->
+  <circle cx="32" cy="32" r="28" fill="#2C3E50" opacity="0.15"/>
+  <!-- Top Hat Style Icon -->
+  <ellipse cx="32" cy="46" rx="22" ry="6" fill="#1A252F"/>
+  <path d="M 18 45 L 20 22 C 20 18, 44 18, 44 22 L 46 45 Z" fill="url(#hatGrad)"/>
+  <ellipse cx="32" cy="22" rx="12" ry="3.5" fill="#34495E"/>
+  <!-- Red ribbon -->
+  <path d="M 19 41 L 45 41 L 45.5 45 L 18.5 45 Z" fill="#E74C3C"/>
+  <!-- Sparkles -->
+  <path d="M 48 16 Q 48 22 54 22 Q 48 22 48 28 Q 48 22 42 22 Q 48 22 48 16 Z" fill="#F1C40F"/>
+  <circle cx="14" cy="20" r="2" fill="#F1C40F"/>
+</svg>

@@ -15,12 +15,58 @@ var was_on_floor: bool = false
 var is_invulnerable: bool = false
 var glide_timer: float = 0.0
 
-# Sombreros disponibles
+var current_hat: String = "none"
+
+# Sombreros disponibles con texturas PNG optimizadas
 var hat_textures: Dictionary = {
-	"crown": preload("res://assets/textures/hat_crown.svg"),
-	"wizard": preload("res://assets/textures/hat_wizard.svg"),
-	"flower": preload("res://assets/textures/hat_flower.svg"),
-	"nightcap": preload("res://assets/textures/hat_nightcap.svg"),
+	"crown": preload("res://assets/textures/hat_crown.png"),
+	"wizard": preload("res://assets/textures/hat_wizard.png"),
+	"flower": preload("res://assets/textures/hat_flower.png"),
+	"nightcap": preload("res://assets/textures/hat_nightcap.png"),
+}
+
+# Sockets de posición de la cabeza para cada animación y fotograma (en espacio de Visuals)
+const HEAD_SOCKETS: Dictionary = {
+	"run": [
+		Vector2(24.2, -51.3), # frame 0
+		Vector2(30.3, -51.3), # frame 1 (extensión zancada hacia adelante)
+		Vector2(25.3, -51.8), # frame 2
+		Vector2(24.2, -44.7), # frame 3 (compresión de pisada hacia abajo)
+		Vector2(24.8, -50.2), # frame 4
+		Vector2(30.3, -50.7), # frame 5 (extensión zancada hacia adelante)
+		Vector2(25.9, -46.9), # frame 6 (compresión de pisada hacia abajo)
+		Vector2(24.2, -50.7), # frame 7
+	],
+	"jump": [
+		Vector2(24.2, -44.7)
+	],
+	"glide": [
+		Vector2(24.2, -51.3)
+	]
+}
+
+# Calibración individual para que cada prenda calce cómoda y exacta en las orejitas
+const HAT_CONFIGS: Dictionary = {
+	"crown": {
+		"offset": Vector2(0.0, -10.0),
+		"scale": Vector2(0.48, 0.48),
+		"rot": 0.0
+	},
+	"flower": {
+		"offset": Vector2(0.0, -8.0),
+		"scale": Vector2(0.48, 0.48),
+		"rot": 0.0
+	},
+	"nightcap": {
+		"offset": Vector2(-3.5, -12.0),
+		"scale": Vector2(0.46, 0.46),
+		"rot": deg_to_rad(-6.0)
+	},
+	"wizard": {
+		"offset": Vector2(-1.0, -15.0),
+		"scale": Vector2(0.46, 0.46),
+		"rot": deg_to_rad(-3.0)
+	}
 }
 
 @onready var visuals: Node2D = $Visuals
@@ -99,6 +145,39 @@ func update_visuals(delta: float) -> void:
 		else:
 			var pitch = clamp(velocity.y / 600.0, -0.35, 0.35)
 			visuals.rotation = lerp_angle(visuals.rotation, pitch, 6.0 * delta)
+			
+	# Actualizar posición y movimiento del sombrero sincronizado al movimiento de la cabeza
+	if hat_sprite.visible and current_hat != "none":
+		update_hat_transform()
+
+func update_hat_transform() -> void:
+	var anim_name = anim_sprite.animation
+	var sockets: Array = HEAD_SOCKETS.get(anim_name, HEAD_SOCKETS["run"])
+	var frame_idx: int = anim_sprite.frame % sockets.size()
+	var base_socket: Vector2 = sockets[frame_idx]
+	
+	var cfg: Dictionary = HAT_CONFIGS.get(current_hat, {
+		"offset": Vector2.ZERO,
+		"scale": Vector2(0.48, 0.48),
+		"rot": 0.0
+	})
+	
+	var target_pos: Vector2 = base_socket + cfg["offset"]
+	var target_rot: float = cfg["rot"]
+	
+	# Dinámica sutil de viento al saltar o planear
+	if not is_on_floor():
+		if is_gliding:
+			target_pos += Vector2(1.0, -1.0)
+			target_rot += deg_to_rad(-5.0)
+		else:
+			var pitch_hat = clamp(velocity.y / 700.0, -0.22, 0.22)
+			target_rot += pitch_hat * 0.4
+	
+	hat_sprite.position = target_pos
+	hat_sprite.rotation = target_rot
+	if not hat_sprite.has_meta("is_animating_scale"):
+		hat_sprite.scale = cfg["scale"]
 
 func launch_spring(bounce_force: float = -680.0) -> void:
 	velocity.y = bounce_force
@@ -129,14 +208,22 @@ func stumble() -> void:
 	blink_tw.tween_callback(func(): is_invulnerable = false)
 
 func equip_hat(hat_id: String) -> void:
+	current_hat = hat_id
 	if hat_id == "none" or not hat_textures.has(hat_id):
 		hat_sprite.visible = false
+		hat_sprite.texture = null
 	else:
 		hat_sprite.texture = hat_textures[hat_id]
 		hat_sprite.visible = true
-		hat_sprite.scale = Vector2(0.8, 0.8)
+		update_hat_transform()
+		
+		var cfg = HAT_CONFIGS.get(hat_id, {"scale": Vector2(0.48, 0.48)})
+		var base_scale: Vector2 = cfg["scale"]
+		hat_sprite.set_meta("is_animating_scale", true)
+		hat_sprite.scale = base_scale * 1.5
 		var tw = create_tween()
-		tw.tween_property(hat_sprite, "scale", Vector2(0.5, 0.5), 0.2).set_trans(Tween.TRANS_BACK)
+		tw.tween_property(hat_sprite, "scale", base_scale, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tw.tween_callback(func(): hat_sprite.remove_meta("is_animating_scale"))
 
 func _on_magnet_area_entered(area: Area2D) -> void:
 	if area is StarCollectible:

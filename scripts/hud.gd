@@ -22,13 +22,17 @@ signal hat_equipped(hat_id: String)
 var total_stars: int = 0
 var max_distance: float = 0.0
 
-# Sistema de Misiones para niños
+# Texturas de botones de modo
+const ICON_SUN: Texture2D = preload("res://assets/textures/sun.png")
+const ICON_MOON: Texture2D = preload("res://assets/textures/moon.png")
+
+# Sistema de Misiones para niños (sin emojis que fallen en renderizar)
 var missions = [
-	{"id": "stars_20", "text": "🎯 Recoge 20 estrellas", "target": 20, "progress": 0, "reward": 10},
-	{"id": "mushroom_2", "text": "🍄 Rebota en 2 hongos saltarines", "target": 2, "progress": 0, "reward": 15},
-	{"id": "glide_4s", "text": "🪂 Planea 4 segundos seguidos", "target": 4, "progress": 0, "reward": 15},
-	{"id": "dist_400", "text": "🏃 Recorre 400 metros", "target": 400, "progress": 0, "reward": 20},
-	{"id": "stars_50", "text": "🌟 Consigue 50 estrellas", "target": 50, "progress": 0, "reward": 25},
+	{"id": "stars_20", "text": "Recoge 20 estrellas", "target": 20, "progress": 0, "reward": 10},
+	{"id": "mushroom_2", "text": "Rebota en 2 hongos saltarines", "target": 2, "progress": 0, "reward": 15},
+	{"id": "glide_4s", "text": "Planea 4 segundos seguidos", "target": 4, "progress": 0, "reward": 15},
+	{"id": "dist_400", "text": "Recorre 400 metros", "target": 400, "progress": 0, "reward": 20},
+	{"id": "stars_50", "text": "Consigue 50 estrellas", "target": 50, "progress": 0, "reward": 25},
 ]
 var current_mission_idx: int = 0
 
@@ -79,21 +83,22 @@ func setup_wardrobe_buttons() -> void:
 		update_hat_button_text(hat_id, btn)
 
 func update_hat_button_text(hat_id: String, btn: Button) -> void:
-	if hat_id == "none":
-		btn.text = "🦊 Al natural"
-		return
-		
 	var names = {
-		"flower": "🌸 Flores",
-		"nightcap": "💤 Dormir",
-		"crown": "👑 Corona",
-		"wizard": "🧙 Mago"
+		"none": "Al natural",
+		"flower": "Flores",
+		"nightcap": "Dormir",
+		"crown": "Corona",
+		"wizard": "Mago"
 	}
 	var hat_name = names.get(hat_id, hat_id)
+	if hat_id == "none":
+		btn.text = " " + hat_name
+		return
+		
 	if unlocked_hats.get(hat_id, false):
-		btn.text = "%s (Usar)" % hat_name
+		btn.text = " %s (Usar)" % hat_name
 	else:
-		btn.text = "%s (%d ⭐)" % [hat_name, hat_prices.get(hat_id, 10)]
+		btn.text = " %s (%d est.)" % [hat_name, hat_prices.get(hat_id, 10)]
 
 func _on_hat_item_clicked(hat_id: String, btn: Button) -> void:
 	if unlocked_hats.get(hat_id, false):
@@ -113,9 +118,9 @@ func _on_hat_item_clicked(hat_id: String, btn: Button) -> void:
 				AudioManager.play_celebration()
 			_on_close_wardrobe_pressed()
 		else:
-			btn.text = "¡Faltan ⭐!"
+			btn.text = " ¡Faltan estrellas!"
 			var tw = create_tween()
-			tw.tween_interval(1.0)
+			tw.tween_interval(1.2)
 			tw.tween_callback(func(): update_hat_button_text(hat_id, btn))
 
 func add_star() -> void:
@@ -143,26 +148,33 @@ func register_mushroom_bounce() -> void:
 func register_glide_time(seconds: float) -> void:
 	check_mission_progress("glide", int(seconds))
 
-func check_mission_progress(type: String, val: int, is_relative: bool = false) -> void:
+func check_mission_progress(mission_type: String, value: int, is_incremental: bool = false) -> void:
 	if current_mission_idx >= missions.size():
 		return
 		
 	var m = missions[current_mission_idx]
-	var matches = false
-	if type == "stars" and m["id"].begins_with("stars"):
-		m["progress"] = val
-		matches = true
-	elif type == "distance" and m["id"].begins_with("dist"):
-		m["progress"] = val
-		matches = true
-	elif type == "mushroom" and m["id"].begins_with("mushroom"):
-		m["progress"] += 1
-		matches = true
-	elif type == "glide" and m["id"].begins_with("glide"):
-		m["progress"] = max(m["progress"], val)
-		matches = true
-		
-	if matches:
+	var matched = false
+	
+	match m["id"]:
+		"stars_20", "stars_50":
+			if mission_type == "stars":
+				m["progress"] = value
+				matched = true
+		"mushroom_2":
+			if mission_type == "mushroom":
+				if is_incremental:
+					m["progress"] += value
+				matched = true
+		"glide_4s":
+			if mission_type == "glide":
+				m["progress"] = max(m["progress"], value)
+				matched = true
+		"dist_400":
+			if mission_type == "distance":
+				m["progress"] = value
+				matched = true
+				
+	if matched:
 		update_mission_display()
 		if m["progress"] >= m["target"]:
 			complete_current_mission()
@@ -176,7 +188,7 @@ func complete_current_mission() -> void:
 		AudioManager.play_celebration()
 		
 	# Mostrar banner de fiesta de misión
-	celebration_text.text = "🎉 ¡Misión Lograda!\n+%d Estrellas de regalo ✨" % m["reward"]
+	celebration_text.text = "¡Misión Lograda!\n+%d Estrellas de regalo" % m["reward"]
 	celebration_banner.visible = true
 	celebration_banner.scale = Vector2(0.5, 0.5)
 	celebration_banner.modulate.a = 0.0
@@ -196,15 +208,16 @@ func complete_current_mission() -> void:
 func update_mission_display() -> void:
 	if current_mission_idx < missions.size():
 		var m = missions[current_mission_idx]
-		mission_label.text = "%s (%d/%d)" % [m["text"], m["progress"], m["target"]]
+		mission_label.text = "Misión: %s (%d/%d)" % [m["text"], m["progress"], m["target"]]
 	else:
-		mission_label.text = "👑 ¡Eres el Gran Campeón del Bosque!"
+		mission_label.text = "¡Eres el Gran Campeón del Bosque!"
 
 func update_star_display() -> void:
 	star_count_label.text = "%d" % total_stars
 
 func set_mode_icon(is_night: bool) -> void:
-	mode_button.text = "🌙 Noche" if is_night else "☀️ Día"
+	mode_button.icon = ICON_MOON if is_night else ICON_SUN
+	mode_button.text = " Noche" if is_night else " Día"
 
 func _on_mode_button_pressed() -> void:
 	mode_toggle_requested.emit()

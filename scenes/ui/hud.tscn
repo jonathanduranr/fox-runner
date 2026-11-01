@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
-[ext_resource type="Texture2D" path="res://assets/textures/star.svg" id="2_star"]
+[ext_resource type="Texture2D" path="res://assets/textures/star.png" id="2_star"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_wardrobe.png" id="3_wardrobe"]
+[ext_resource type="Texture2D" path="res://assets/textures/sun.png" id="4_sun"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_natural.png" id="5_natural"]
+[ext_resource type="Texture2D" path="res://assets/textures/hat_flower.png" id="6_flower"]
+[ext_resource type="Texture2D" path="res://assets/textures/hat_nightcap.png" id="7_nightcap"]
+[ext_resource type="Texture2D" path="res://assets/textures/hat_crown.png" id="8_crown"]
+[ext_resource type="Texture2D" path="res://assets/textures/hat_wizard.png" id="9_wizard"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_hud")
@@ -70,7 +77,7 @@ grow_horizontal = 2
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.98, 0.94, 1)
 theme_override_font_sizes/font_size = 18
-text = "🎯 Recoge 20 estrellas (0/20)"
+text = "Misión: Recoge 20 estrellas (0/20)"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -79,24 +86,30 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -280.0
-offset_top = 22.0
-offset_right = -28.0
+offset_left = -310.0
+offset_top = 20.0
+offset_right = -24.0
 offset_bottom = 66.0
 grow_horizontal = 0
 theme_override_constants/separation = 12
 
 [node name="WardrobeButton" type="Button" parent="TopBar/RightButtons"]
+custom_minimum_size = Vector2(130, 44)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 17
-text = "🎩 Ropero"
+theme_override_font_sizes/font_size = 16
+text = " Ropero"
+icon = ExtResource("3_wardrobe")
+expand_icon = true
 
 [node name="ModeButton" type="Button" parent="TopBar/RightButtons"]
+custom_minimum_size = Vector2(105, 44)
 layout_mode = 2
 focus_mode = 0
-theme_override_font_sizes/font_size = 17
-text = "☀️ Día"
+theme_override_font_sizes/font_size = 16
+text = " Día"
+icon = ExtResource("4_sun")
+expand_icon = true
 
 [node name="TutorialLabel" type="Label" parent="."]
 anchors_preset = 7
@@ -115,7 +128,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.4)
 theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 20
-text = "✨ Toca para saltar  •  Mantén presionado para planear ✨"
+text = "Toca para saltar  •  Mantén presionado para planear"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -142,8 +155,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 0.95, 0.7, 1)
 theme_override_font_sizes/font_size = 24
-text = "🎉 ¡Misión Lograda!
-+15 Estrellas de regalo ✨"
+text = "¡Misión Lograda!
++15 Estrellas de regalo"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -154,10 +167,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -260.0
-offset_top = -180.0
-offset_right = 260.0
-offset_bottom = 180.0
+offset_left = -280.0
+offset_top = -210.0
+offset_right = 280.0
+offset_bottom = 210.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -165,11 +178,11 @@ grow_vertical = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 18.0
-offset_bottom = 50.0
+offset_top = 16.0
+offset_bottom = 48.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 22
-text = "🎩 El Guardarropa del Zorrito"
+text = "El Guardarropa del Zorrito"
 horizontal_alignment = 1
 
 [node name="VBox" type="VBoxContainer" parent="WardrobeModal"]
@@ -177,54 +190,64 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = 65.0
-offset_right = -32.0
-offset_bottom = -70.0
+offset_left = 28.0
+offset_top = 58.0
+offset_right = -28.0
+offset_bottom = -66.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Grid" type="GridContainer" parent="WardrobeModal/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/h_separation = 16
-theme_override_constants/v_separation = 16
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 12
 columns = 2
 
 [node name="NoneBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 17
-text = "🦊 Al natural"
+theme_override_font_sizes/font_size = 16
+text = " Al natural"
+icon = ExtResource("5_natural")
+expand_icon = true
 
 [node name="FlowerBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 17
-text = "🌸 Flores (10 ⭐)"
+theme_override_font_sizes/font_size = 16
+text = " Flores (10 est.)"
+icon = ExtResource("6_flower")
+expand_icon = true
 
 [node name="NightcapBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 17
-text = "💤 Dormir (15 ⭐)"
+theme_override_font_sizes/font_size = 16
+text = " Dormir (15 est.)"
+icon = ExtResource("7_nightcap")
+expand_icon = true
 
 [node name="CrownBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 17
-text = "👑 Corona (25 ⭐)"
+theme_override_font_sizes/font_size = 16
+text = " Corona (25 est.)"
+icon = ExtResource("8_crown")
+expand_icon = true
 
 [node name="WizardBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 17
-text = "🧙 Mago (35 ⭐)"
+theme_override_font_sizes/font_size = 16
+text = " Mago (35 est.)"
+icon = ExtResource("9_wizard")
+expand_icon = true
 
 [node name="CloseButton" type="Button" parent="WardrobeModal"]
 layout_mode = 1
@@ -234,7 +257,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -80.0
-offset_top = -54.0
+offset_top = -52.0
 offset_right = 80.0
 offset_bottom = -16.0
 grow_horizontal = 2

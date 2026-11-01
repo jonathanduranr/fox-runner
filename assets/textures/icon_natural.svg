@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="foxFaceGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A3D"/>
+      <stop offset="100%" stop-color="#E65100"/>
+    </linearGradient>
+  </defs>
+  <!-- Fox Ears -->
+  <polygon points="12,32 16,10 30,24" fill="url(#foxFaceGrad)"/>
+  <polygon points="52,32 48,10 34,24" fill="url(#foxFaceGrad)"/>
+  <polygon points="16,28 18,14 28,24" fill="#2C3E50"/>
+  <polygon points="48,28 46,14 36,24" fill="#2C3E50"/>
+  <!-- Fox Face Head -->
+  <polygon points="10,32 54,32 32,54" fill="url(#foxFaceGrad)"/>
+  <!-- White Cheeks -->
+  <polygon points="10,32 32,54 20,44" fill="#FFFFFF"/>
+  <polygon points="54,32 32,54 44,44" fill="#FFFFFF"/>
+  <!-- Cute Nose -->
+  <ellipse cx="32" cy="52" rx="3.5" ry="2.5" fill="#2C3E50"/>
+  <!-- Eyes -->
+  <circle cx="24" cy="34" r="2.5" fill="#2C3E50"/>
+  <circle cx="40" cy="34" r="2.5" fill="#2C3E50"/>
+</svg>
