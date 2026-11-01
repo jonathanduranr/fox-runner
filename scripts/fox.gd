@@ -15,11 +15,6 @@ var was_on_floor: bool = false
 var is_invulnerable: bool = false
 var glide_timer: float = 0.0
 
-# Gestión del pañuelo rojo dinámico ondeante (Estilo Alto's Adventure)
-var scarf_points: Array[Vector2] = []
-const SCARF_LENGTH: int = 7
-const SCARF_SEGMENT_DIST: float = 8.0
-
 # Sombreros disponibles
 var hat_textures: Dictionary = {
 	"crown": preload("res://assets/textures/hat_crown.svg"),
@@ -31,7 +26,6 @@ var hat_textures: Dictionary = {
 @onready var visuals: Node2D = $Visuals
 @onready var anim_sprite: AnimatedSprite2D = $Visuals/AnimSprite
 @onready var hat_sprite: Sprite2D = $Visuals/Hat
-@onready var scarf_line: Line2D = $Visuals/ScarfLine
 @onready var glide_particles: CPUParticles2D = $Visuals/GlideParticles
 @onready var night_light: PointLight2D = $NightLight
 @onready var magnet_area: Area2D = $MagnetArea
@@ -45,13 +39,6 @@ func _ready() -> void:
 	magnet_area.area_entered.connect(_on_magnet_area_entered)
 	if glide_particles:
 		glide_particles.emitting = false
-		
-	# Inicializar puntos de la bufanda
-	scarf_points.clear()
-	var neck_pos = Vector2(2, -28)
-	for i in range(SCARF_LENGTH):
-		scarf_points.append(neck_pos - Vector2(i * SCARF_SEGMENT_DIST, 0))
-	scarf_line.points = PackedVector2Array(scarf_points)
 
 func _physics_process(delta: float) -> void:
 	velocity.x = run_speed
@@ -99,11 +86,9 @@ func _physics_process(delta: float) -> void:
 	was_on_floor = is_on_floor()
 	move_and_slide()
 	
-	update_visuals_and_scarf(delta)
+	update_visuals(delta)
 
-func update_visuals_and_scarf(delta: float) -> void:
-	var t = Time.get_ticks_msec() / 1000.0
-	
+func update_visuals(delta: float) -> void:
 	if is_on_floor():
 		var floor_normal = get_floor_normal()
 		var target_rot = floor_normal.angle() + PI * 0.5
@@ -114,24 +99,6 @@ func update_visuals_and_scarf(delta: float) -> void:
 		else:
 			var pitch = clamp(velocity.y / 600.0, -0.35, 0.35)
 			visuals.rotation = lerp_angle(visuals.rotation, pitch, 6.0 * delta)
-			
-	# Simulación de la bufanda ondeante detrás del cuello
-	var neck_origin = Vector2(2, -28)
-	scarf_points[0] = neck_origin
-	
-	for i in range(1, SCARF_LENGTH):
-		var prev = scarf_points[i - 1]
-		var curr = scarf_points[i]
-		
-		# Ondulación por viento
-		var wave_freq = 14.0 if is_gliding else 18.0
-		var wave_amp = 3.5 if is_gliding else 5.0
-		var wave_y = sin(t * wave_freq - float(i) * 0.8) * wave_amp
-		
-		var target_pos = prev - Vector2(SCARF_SEGMENT_DIST, -wave_y * 0.3)
-		scarf_points[i] = curr.lerp(target_pos, 16.0 * delta)
-		
-	scarf_line.points = PackedVector2Array(scarf_points)
 
 func launch_spring(bounce_force: float = -680.0) -> void:
 	velocity.y = bounce_force

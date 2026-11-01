@@ -41,13 +41,6 @@ scale_amount_min = 0.1
 scale_amount_max = 0.22
 color = Color(1, 0.92, 0.6, 0.85)
 
-[node name="ScarfLine" type="Line2D" parent="Visuals"]
-width = 6.0
-default_color = Color(0.92, 0.25, 0.2, 1)
-joint_mode = 2
-begin_cap_mode = 2
-end_cap_mode = 2
-
 [node name="AnimSprite" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -32)
 scale = Vector2(0.55, 0.55)
