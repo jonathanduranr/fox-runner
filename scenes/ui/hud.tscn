@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 [ext_resource type="Texture2D" path="res://assets/textures/star.png" id="2_star"]
@@ -7,6 +7,116 @@
 [ext_resource type="Texture2D" path="res://assets/textures/icon_natural.png" id="5_natural"]
 [ext_resource type="Script" path="res://scripts/fox_drop_zone.gd" id="6_drop_zone"]
 [ext_resource type="Texture2D" path="res://assets/textures/dressed_foxes/none.png" id="7_fox_none"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+content_margin_left = 18.0
+content_margin_top = 6.0
+content_margin_right = 18.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 1, 1, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.75, 0.9, 0.98, 1)
+corner_radius_top_left = 22
+corner_radius_top_right = 22
+corner_radius_bottom_right = 22
+corner_radius_bottom_left = 22
+shadow_color = Color(0.08, 0.25, 0.4, 0.12)
+shadow_size = 10
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_centercard"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 1, 1, 0.96)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.25, 0.75, 0.98, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+corner_radius_bottom_right = 28
+corner_radius_bottom_left = 28
+shadow_color = Color(0.08, 0.25, 0.45, 0.2)
+shadow_size = 20
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_badge"]
+content_margin_left = 14.0
+content_margin_top = 4.0
+content_margin_right = 14.0
+content_margin_bottom = 4.0
+bg_color = Color(0.96, 0.42, 0.52, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0.8, 0.2, 0.3, 0.25)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dropzone"]
+bg_color = Color(0.94, 0.98, 1, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.75, 0.9, 0.98, 0.8)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_closebtn"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+bg_color = Color(0.18, 0.78, 0.48, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+shadow_color = Color(0.1, 0.5, 0.3, 0.3)
+shadow_size = 6
+shadow_offset = Vector2(0, 3)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unequipbtn"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(0.98, 0.92, 0.94, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.95, 0.6, 0.7, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_randombtn"]
+content_margin_left = 14.0
+content_margin_top = 6.0
+content_margin_right = 14.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 0.96, 0.85, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.98, 0.75, 0.25, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
 
 [node name="HUD" type="CanvasLayer"]
 process_mode = 3
@@ -159,135 +269,170 @@ text = "¡Misión Lograda!
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="WardrobeBackdrop" type="ColorRect" parent="."]
+[node name="WardrobeModal" type="Control" parent="."]
 visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.45)
 
-[node name="WardrobeModal" type="Panel" parent="."]
-visible = false
+[node name="TableBackground" type="ColorRect" parent="WardrobeModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.8, 0.93, 0.99, 1)
+
+[node name="StickersArea" type="Control" parent="WardrobeModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="CenterCard" type="PanelContainer" parent="WardrobeModal"]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -440.0
-offset_top = -260.0
-offset_right = 440.0
-offset_bottom = 260.0
+offset_left = -195.0
+offset_top = -225.0
+offset_right = 195.0
+offset_bottom = 245.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_centercard")
 
-[node name="Title" type="Label" parent="WardrobeModal"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 12.0
-offset_bottom = 42.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 22
-text = "El Probador de Stickers del Zorrito"
-horizontal_alignment = 1
-
-[node name="Subtitle" type="Label" parent="WardrobeModal"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 40.0
-offset_bottom = 64.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.7, 0.9)
-theme_override_font_sizes/font_size = 14
-text = "¡Toca o arrastra cualquier sticker hacia el zorrito para vestirlo!"
-horizontal_alignment = 1
-
-[node name="Content" type="HBoxContainer" parent="WardrobeModal"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 22.0
-offset_top = 68.0
-offset_right = -22.0
-offset_bottom = -54.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 18
-
-[node name="FoxStand" type="VBoxContainer" parent="WardrobeModal/Content"]
-custom_minimum_size = Vector2(360, 0)
+[node name="VBox" type="VBoxContainer" parent="WardrobeModal/CenterCard"]
 layout_mode = 2
 theme_override_constants/separation = 8
+alignment = 1
 
-[node name="DropZone" type="PanelContainer" parent="WardrobeModal/Content/FoxStand"]
-custom_minimum_size = Vector2(350, 250)
+[node name="BadgeRow" type="HBoxContainer" parent="WardrobeModal/CenterCard/VBox"]
 layout_mode = 2
-size_flags_vertical = 3
+alignment = 1
+
+[node name="CardBadge" type="Label" parent="WardrobeModal/CenterCard/VBox/BadgeRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_badge")
+text = "👕 ZONA DE VESTIR"
+horizontal_alignment = 1
+
+[node name="DropZone" type="PanelContainer" parent="WardrobeModal/CenterCard/VBox"]
+custom_minimum_size = Vector2(350, 260)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_dropzone")
 script = ExtResource("6_drop_zone")
 
-[node name="DressedFoxRect" type="TextureRect" parent="WardrobeModal/Content/FoxStand/DropZone"]
-custom_minimum_size = Vector2(330, 235)
+[node name="FloorShadow" type="ColorRect" parent="WardrobeModal/CenterCard/VBox/DropZone"]
+custom_minimum_size = Vector2(210, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+color = Color(0.2, 0.45, 0.65, 0.18)
+
+[node name="DressedFoxRect" type="TextureRect" parent="WardrobeModal/CenterCard/VBox/DropZone"]
+custom_minimum_size = Vector2(330, 245)
 layout_mode = 2
 texture = ExtResource("7_fox_none")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="OutfitNameLabel" type="Label" parent="WardrobeModal/Content/FoxStand"]
+[node name="OutfitNameLabel" type="Label" parent="WardrobeModal/CenterCard/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.98, 0.94, 1)
+theme_override_colors/font_color = Color(0.08, 0.28, 0.45, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 0.8)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 18
 text = "Al natural"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="UnequipBtn" type="Button" parent="WardrobeModal/Content/FoxStand"]
-custom_minimum_size = Vector2(230, 38)
+[node name="ButtonsRow" type="HBoxContainer" parent="WardrobeModal/CenterCard/VBox"]
 layout_mode = 2
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 14
-text = "Quitar sticker (Al natural)"
-icon = ExtResource("5_natural")
-expand_icon = true
+theme_override_constants/separation = 12
+alignment = 1
 
-[node name="StickerAlbum" type="VBoxContainer" parent="WardrobeModal/Content"]
+[node name="UnequipBtn" type="Button" parent="WardrobeModal/CenterCard/VBox/ButtonsRow"]
+custom_minimum_size = Vector2(150, 36)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
+focus_mode = 0
+theme_override_colors/font_color = Color(0.75, 0.18, 0.28, 1)
+theme_override_colors/font_hover_color = Color(0.9, 0.1, 0.2, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_unequipbtn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_unequipbtn")
+text = "🗑️ Despegar todo"
 
-[node name="AlbumHeader" type="Label" parent="WardrobeModal/Content/StickerAlbum"]
+[node name="RandomBtn" type="Button" parent="WardrobeModal/CenterCard/VBox/ButtonsRow"]
+custom_minimum_size = Vector2(130, 36)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
-theme_override_font_sizes/font_size = 16
-text = "Álbum de Stickers Coleccionables (12)"
-horizontal_alignment = 1
+focus_mode = 0
+theme_override_colors/font_color = Color(0.65, 0.4, 0.05, 1)
+theme_override_colors/font_hover_color = Color(0.85, 0.5, 0.05, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_randombtn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_randombtn")
+text = "🎲 Sorpresa"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="WardrobeModal/Content/StickerAlbum"]
-layout_mode = 2
-size_flags_vertical = 3
-horizontal_scroll_mode = 0
-
-[node name="StickerGrid" type="GridContainer" parent="WardrobeModal/Content/StickerAlbum/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/h_separation = 8
-theme_override_constants/v_separation = 8
-columns = 3
-
-[node name="CloseButton" type="Button" parent="WardrobeModal"]
+[node name="TopHeader" type="PanelContainer" parent="WardrobeModal"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -90.0
-offset_top = -46.0
-offset_right = 90.0
-offset_bottom = -10.0
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 12.0
+offset_right = -24.0
+offset_bottom = 74.0
 grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 16
-text = "Volver al Juego"
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HBox" type="HBoxContainer" parent="WardrobeModal/TopHeader"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="TitleBox" type="HBoxContainer" parent="WardrobeModal/TopHeader/HBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Icon" type="Label" parent="WardrobeModal/TopHeader/HBox/TitleBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "🦊"
+
+[node name="Title" type="Label" parent="WardrobeModal/TopHeader/HBox/TitleBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.02, 0.42, 0.65, 1)
+theme_override_font_sizes/font_size = 18
+text = "EL VESTIDOR DE STICKERS"
+vertical_alignment = 1
+
+[node name="InstructionLabel" type="Label" parent="WardrobeModal/TopHeader/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.08, 0.35, 0.5, 0.9)
+theme_override_font_sizes/font_size = 14
+text = "¡Toca o arrastra cualquier prenda hacia el zorrito para vestirlo! ✨"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="WardrobeModal/TopHeader/HBox"]
+custom_minimum_size = Vector2(150, 42)
+layout_mode = 2
+focus_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_closebtn")
+theme_override_styles/hover = SubResource("StyleBoxFlat_closebtn")
+text = "🦊▶️ ¡A JUGAR!"
