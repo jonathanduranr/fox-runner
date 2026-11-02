@@ -1,15 +1,12 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 [ext_resource type="Texture2D" path="res://assets/textures/star.png" id="2_star"]
 [ext_resource type="Texture2D" path="res://assets/textures/icon_wardrobe.png" id="3_wardrobe"]
 [ext_resource type="Texture2D" path="res://assets/textures/sun.png" id="4_sun"]
 [ext_resource type="Texture2D" path="res://assets/textures/icon_natural.png" id="5_natural"]
-[ext_resource type="Texture2D" path="res://assets/textures/wardrobe/tab_hats.png" id="6_tab_hats"]
-[ext_resource type="Texture2D" path="res://assets/textures/wardrobe/tab_eyewear.png" id="7_tab_eyewear"]
-[ext_resource type="Texture2D" path="res://assets/textures/wardrobe/tab_backpacks.png" id="8_tab_backpacks"]
-[ext_resource type="Texture2D" path="res://assets/textures/wardrobe/tab_footwear.png" id="9_tab_footwear"]
-[ext_resource type="Texture2D" path="res://assets/textures/wardrobe/base_fox.png" id="10_base_fox"]
+[ext_resource type="Script" path="res://scripts/fox_drop_zone.gd" id="6_drop_zone"]
+[ext_resource type="Texture2D" path="res://assets/textures/dressed_foxes/none.png" id="7_fox_none"]
 
 [node name="HUD" type="CanvasLayer"]
 process_mode = 3
@@ -178,10 +175,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -375.0
-offset_top = -240.0
-offset_right = 375.0
-offset_bottom = 240.0
+offset_left = -440.0
+offset_top = -260.0
+offset_right = 440.0
+offset_bottom = 260.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -190,10 +187,22 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 12.0
-offset_bottom = 44.0
+offset_bottom = 42.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 22
-text = "El Guardarropa del Zorrito"
+text = "El Probador de Stickers del Zorrito"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="WardrobeModal"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 40.0
+offset_bottom = 64.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.7, 0.9)
+theme_override_font_sizes/font_size = 14
+text = "¡Toca o arrastra cualquier sticker hacia el zorrito para vestirlo!"
 horizontal_alignment = 1
 
 [node name="Content" type="HBoxContainer" parent="WardrobeModal"]
@@ -202,189 +211,70 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 22.0
-offset_top = 48.0
+offset_top = 68.0
 offset_right = -22.0
 offset_bottom = -54.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 16
+theme_override_constants/separation = 18
 
-[node name="LeftSection" type="VBoxContainer" parent="WardrobeModal/Content"]
+[node name="FoxStand" type="VBoxContainer" parent="WardrobeModal/Content"]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="CategoryTabs" type="HBoxContainer" parent="WardrobeModal/Content/LeftSection"]
-custom_minimum_size = Vector2(0, 38)
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="TabHats" type="Button" parent="WardrobeModal/Content/LeftSection/CategoryTabs"]
-custom_minimum_size = Vector2(80, 36)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Gorros"
-icon = ExtResource("6_tab_hats")
-expand_icon = true
-
-[node name="TabEyewear" type="Button" parent="WardrobeModal/Content/LeftSection/CategoryTabs"]
-custom_minimum_size = Vector2(80, 36)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Gafas"
-icon = ExtResource("7_tab_eyewear")
-expand_icon = true
-
-[node name="TabBackpacks" type="Button" parent="WardrobeModal/Content/LeftSection/CategoryTabs"]
-custom_minimum_size = Vector2(88, 36)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Mochilas"
-icon = ExtResource("8_tab_backpacks")
-expand_icon = true
-
-[node name="TabFootwear" type="Button" parent="WardrobeModal/Content/LeftSection/CategoryTabs"]
-custom_minimum_size = Vector2(84, 36)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 13
-text = "Zapatos"
-icon = ExtResource("9_tab_footwear")
-expand_icon = true
-
-[node name="ItemList" type="VBoxContainer" parent="WardrobeModal/Content/LeftSection"]
+[node name="DropZone" type="PanelContainer" parent="WardrobeModal/Content/FoxStand"]
+custom_minimum_size = Vector2(350, 250)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 6
+script = ExtResource("6_drop_zone")
 
-[node name="ItemBtn0" type="Button" parent="WardrobeModal/Content/LeftSection/ItemList"]
-custom_minimum_size = Vector2(0, 48)
+[node name="DressedFoxRect" type="TextureRect" parent="WardrobeModal/Content/FoxStand/DropZone"]
+custom_minimum_size = Vector2(330, 235)
 layout_mode = 2
-theme_override_font_sizes/font_size = 15
-text = " Al natural (Desequipar)"
-icon = ExtResource("5_natural")
-expand_icon = true
-
-[node name="ItemBtn1" type="Button" parent="WardrobeModal/Content/LeftSection/ItemList"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-theme_override_font_sizes/font_size = 15
-expand_icon = true
-
-[node name="ItemBtn2" type="Button" parent="WardrobeModal/Content/LeftSection/ItemList"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-theme_override_font_sizes/font_size = 15
-expand_icon = true
-
-[node name="ItemBtn3" type="Button" parent="WardrobeModal/Content/LeftSection/ItemList"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-theme_override_font_sizes/font_size = 15
-expand_icon = true
-
-[node name="ItemBtn4" type="Button" parent="WardrobeModal/Content/LeftSection/ItemList"]
-custom_minimum_size = Vector2(0, 48)
-layout_mode = 2
-theme_override_font_sizes/font_size = 15
-expand_icon = true
-
-[node name="PreviewSection" type="VBoxContainer" parent="WardrobeModal/Content"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6
-
-[node name="PreviewHeader" type="Label" parent="WardrobeModal/Content/PreviewSection"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.7, 1)
-theme_override_font_sizes/font_size = 16
-text = "Probador Combinable"
-horizontal_alignment = 1
-
-[node name="PreviewCard" type="PanelContainer" parent="WardrobeModal/Content/PreviewSection"]
-custom_minimum_size = Vector2(260, 180)
-layout_mode = 2
-size_flags_horizontal = 4
-
-[node name="LayersHolder" type="Control" parent="WardrobeModal/Content/PreviewSection/PreviewCard"]
-custom_minimum_size = Vector2(250, 175)
-layout_mode = 2
-
-[node name="BaseFox" type="TextureRect" parent="WardrobeModal/Content/PreviewSection/PreviewCard/LayersHolder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("10_base_fox")
+texture = ExtResource("7_fox_none")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="LayerFootwear" type="TextureRect" parent="WardrobeModal/Content/PreviewSection/PreviewCard/LayersHolder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="LayerBackpack" type="TextureRect" parent="WardrobeModal/Content/PreviewSection/PreviewCard/LayersHolder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="LayerEyewear" type="TextureRect" parent="WardrobeModal/Content/PreviewSection/PreviewCard/LayersHolder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="LayerHat" type="TextureRect" parent="WardrobeModal/Content/PreviewSection/PreviewCard/LayersHolder"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 1
-stretch_mode = 5
-
-[node name="PreviewTitle" type="Label" parent="WardrobeModal/Content/PreviewSection"]
+[node name="OutfitNameLabel" type="Label" parent="WardrobeModal/Content/FoxStand"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 text = "Al natural"
 horizontal_alignment = 1
 
-[node name="PreviewDesc" type="Label" parent="WardrobeModal/Content/PreviewSection"]
-custom_minimum_size = Vector2(0, 34)
+[node name="UnequipBtn" type="Button" parent="WardrobeModal/Content/FoxStand"]
+custom_minimum_size = Vector2(230, 38)
 layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.95, 0.85, 0.85)
-theme_override_font_sizes/font_size = 13
-text = "El pelaje suave y libre del zorrito."
-horizontal_alignment = 1
-autowrap_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 14
+text = "Quitar sticker (Al natural)"
+icon = ExtResource("5_natural")
+expand_icon = true
 
-[node name="ActionBtn" type="Button" parent="WardrobeModal/Content/PreviewSection"]
-custom_minimum_size = Vector2(0, 40)
+[node name="StickerAlbum" type="VBoxContainer" parent="WardrobeModal/Content"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="AlbumHeader" type="Label" parent="WardrobeModal/Content/StickerAlbum"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.75, 1)
 theme_override_font_sizes/font_size = 16
-text = "Equipado ✓"
+text = "Álbum de Stickers Coleccionables (12)"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="WardrobeModal/Content/StickerAlbum"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="StickerGrid" type="GridContainer" parent="WardrobeModal/Content/StickerAlbum/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 3
 
 [node name="CloseButton" type="Button" parent="WardrobeModal"]
 layout_mode = 1
