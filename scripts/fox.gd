@@ -17,61 +17,17 @@ var glide_timer: float = 0.0
 
 var current_hat: String = "none"
 
-# Sombreros disponibles con texturas PNG optimizadas
-var hat_textures: Dictionary = {
-	"crown": preload("res://assets/textures/hat_crown.png"),
-	"wizard": preload("res://assets/textures/hat_wizard.png"),
-	"flower": preload("res://assets/textures/hat_flower.png"),
-	"nightcap": preload("res://assets/textures/hat_nightcap.png"),
-}
-
-# Sockets de posición de la cabeza para cada animación y fotograma (en espacio de Visuals)
-const HEAD_SOCKETS: Dictionary = {
-	"run": [
-		Vector2(24.2, -51.3), # frame 0
-		Vector2(30.3, -51.3), # frame 1 (extensión zancada hacia adelante)
-		Vector2(25.3, -51.8), # frame 2
-		Vector2(24.2, -44.7), # frame 3 (compresión de pisada hacia abajo)
-		Vector2(24.8, -50.2), # frame 4
-		Vector2(30.3, -50.7), # frame 5 (extensión zancada hacia adelante)
-		Vector2(25.9, -46.9), # frame 6 (compresión de pisada hacia abajo)
-		Vector2(24.2, -50.7), # frame 7
-	],
-	"jump": [
-		Vector2(24.2, -44.7)
-	],
-	"glide": [
-		Vector2(24.2, -51.3)
-	]
-}
-
-# Calibración individual anatómica para que cada prenda calce cómoda y natural en la cabecita
-const HAT_CONFIGS: Dictionary = {
-	"crown": {
-		"offset": Vector2(0.0, -6.0),
-		"scale": Vector2(0.19, 0.19),
-		"rot": deg_to_rad(2.0)
-	},
-	"flower": {
-		"offset": Vector2(0.0, -4.0),
-		"scale": Vector2(0.22, 0.22),
-		"rot": 0.0
-	},
-	"nightcap": {
-		"offset": Vector2(-1.5, -5.0),
-		"scale": Vector2(0.22, 0.22),
-		"rot": deg_to_rad(-5.0)
-	},
-	"wizard": {
-		"offset": Vector2(-1.0, -8.0),
-		"scale": Vector2(0.21, 0.21),
-		"rot": deg_to_rad(-3.0)
-	}
+# SpriteFrames anatómicos pre-renderizados fotograma a fotograma para cada prenda/sombrero
+var outfit_frames: Dictionary = {
+	"crown": preload("res://scenes/outfit_crown.tres"),
+	"wizard": preload("res://scenes/outfit_wizard.tres"),
+	"flower": preload("res://scenes/outfit_flower.tres"),
+	"nightcap": preload("res://scenes/outfit_nightcap.tres"),
 }
 
 @onready var visuals: Node2D = $Visuals
 @onready var anim_sprite: AnimatedSprite2D = $Visuals/AnimSprite
-@onready var hat_sprite: Sprite2D = $Visuals/Hat
+@onready var outfit_sprite: AnimatedSprite2D = $Visuals/Outfit
 @onready var glide_particles: CPUParticles2D = $Visuals/GlideParticles
 @onready var night_aura: Sprite2D = $Visuals/NightAura
 @onready var night_light: PointLight2D = $NightLight
@@ -147,38 +103,12 @@ func update_visuals(delta: float) -> void:
 			var pitch = clamp(velocity.y / 600.0, -0.35, 0.35)
 			visuals.rotation = lerp_angle(visuals.rotation, pitch, 6.0 * delta)
 			
-	# Actualizar posición y movimiento del sombrero sincronizado al movimiento de la cabeza
-	if hat_sprite.visible and current_hat != "none":
-		update_hat_transform()
-
-func update_hat_transform() -> void:
-	var anim_name = anim_sprite.animation
-	var sockets: Array = HEAD_SOCKETS.get(anim_name, HEAD_SOCKETS["run"])
-	var frame_idx: int = anim_sprite.frame % sockets.size()
-	var base_socket: Vector2 = sockets[frame_idx]
-	
-	var cfg: Dictionary = HAT_CONFIGS.get(current_hat, {
-		"offset": Vector2.ZERO,
-		"scale": Vector2(0.48, 0.48),
-		"rot": 0.0
-	})
-	
-	var target_pos: Vector2 = base_socket + cfg["offset"]
-	var target_rot: float = cfg["rot"]
-	
-	# Dinámica sutil de viento al saltar o planear
-	if not is_on_floor():
-		if is_gliding:
-			target_pos += Vector2(1.0, -1.0)
-			target_rot += deg_to_rad(-5.0)
-		else:
-			var pitch_hat = clamp(velocity.y / 700.0, -0.22, 0.22)
-			target_rot += pitch_hat * 0.4
-	
-	hat_sprite.position = target_pos
-	hat_sprite.rotation = target_rot
-	if not hat_sprite.has_meta("is_animating_scale"):
-		hat_sprite.scale = cfg["scale"]
+	# Sincronizar prenda/sombrero fotograma a fotograma con el zorrito
+	if outfit_sprite and outfit_sprite.visible:
+		if outfit_sprite.animation != anim_sprite.animation:
+			outfit_sprite.animation = anim_sprite.animation
+		outfit_sprite.frame = anim_sprite.frame
+		outfit_sprite.speed_scale = anim_sprite.speed_scale
 
 func launch_spring(bounce_force: float = -680.0) -> void:
 	velocity.y = bounce_force
@@ -210,21 +140,20 @@ func stumble() -> void:
 
 func equip_hat(hat_id: String) -> void:
 	current_hat = hat_id
-	if hat_id == "none" or not hat_textures.has(hat_id):
-		hat_sprite.visible = false
-		hat_sprite.texture = null
+	if hat_id == "none" or not outfit_frames.has(hat_id):
+		outfit_sprite.visible = false
+		outfit_sprite.sprite_frames = null
 	else:
-		hat_sprite.texture = hat_textures[hat_id]
-		hat_sprite.visible = true
-		update_hat_transform()
+		outfit_sprite.sprite_frames = outfit_frames[hat_id]
+		outfit_sprite.visible = true
+		outfit_sprite.animation = anim_sprite.animation
+		outfit_sprite.frame = anim_sprite.frame
+		outfit_sprite.speed_scale = anim_sprite.speed_scale
 		
-		var cfg = HAT_CONFIGS.get(hat_id, {"scale": Vector2(0.48, 0.48)})
-		var base_scale: Vector2 = cfg["scale"]
-		hat_sprite.set_meta("is_animating_scale", true)
-		hat_sprite.scale = base_scale * 1.5
-		var tw = create_tween()
-		tw.tween_property(hat_sprite, "scale", base_scale, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-		tw.tween_callback(func(): hat_sprite.remove_meta("is_animating_scale"))
+		# Animación suave y tierna al vestirse
+		visuals.scale = Vector2(1.12, 1.12)
+		var tw = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw.tween_property(visuals, "scale", Vector2(1.0, 1.0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func _on_magnet_area_entered(area: Area2D) -> void:
 	if area is StarCollectible:

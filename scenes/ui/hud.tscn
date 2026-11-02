@@ -1,14 +1,15 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud"]
 [ext_resource type="Texture2D" path="res://assets/textures/star.png" id="2_star"]
 [ext_resource type="Texture2D" path="res://assets/textures/icon_wardrobe.png" id="3_wardrobe"]
 [ext_resource type="Texture2D" path="res://assets/textures/sun.png" id="4_sun"]
 [ext_resource type="Texture2D" path="res://assets/textures/icon_natural.png" id="5_natural"]
-[ext_resource type="Texture2D" path="res://assets/textures/hat_flower.png" id="6_flower"]
-[ext_resource type="Texture2D" path="res://assets/textures/hat_nightcap.png" id="7_nightcap"]
-[ext_resource type="Texture2D" path="res://assets/textures/hat_crown.png" id="8_crown"]
-[ext_resource type="Texture2D" path="res://assets/textures/hat_wizard.png" id="9_wizard"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_flower.png" id="6_flower"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_nightcap.png" id="7_nightcap"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_crown.png" id="8_crown"]
+[ext_resource type="Texture2D" path="res://assets/textures/icon_wizard.png" id="9_wizard"]
+[ext_resource type="Texture2D" path="res://assets/textures/previews/preview_none.png" id="10_prev_none"]
 
 [node name="HUD" type="CanvasLayer"]
 process_mode = 3
@@ -177,10 +178,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -210.0
-offset_right = 280.0
-offset_bottom = 210.0
+offset_left = -340.0
+offset_top = -225.0
+offset_right = 340.0
+offset_bottom = 225.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -188,76 +189,116 @@ grow_vertical = 2
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 16.0
-offset_bottom = 48.0
+offset_top = 14.0
+offset_bottom = 46.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 22
 text = "El Guardarropa del Zorrito"
 horizontal_alignment = 1
 
-[node name="VBox" type="VBoxContainer" parent="WardrobeModal"]
+[node name="Content" type="HBoxContainer" parent="WardrobeModal"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 28.0
-offset_top = 58.0
-offset_right = -28.0
-offset_bottom = -66.0
+offset_left = 24.0
+offset_top = 52.0
+offset_right = -24.0
+offset_bottom = -58.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 18
 
-[node name="Grid" type="GridContainer" parent="WardrobeModal/VBox"]
+[node name="ItemList" type="VBoxContainer" parent="WardrobeModal/Content"]
+custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 14
-theme_override_constants/v_separation = 12
-columns = 2
+theme_override_constants/separation = 8
 
-[node name="NoneBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
+[node name="NoneBtn" type="Button" parent="WardrobeModal/Content/ItemList"]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 15
 text = " Al natural"
 icon = ExtResource("5_natural")
 expand_icon = true
 
-[node name="FlowerBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
+[node name="FlowerBtn" type="Button" parent="WardrobeModal/Content/ItemList"]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 16
-text = " Flores (10 est.)"
+theme_override_font_sizes/font_size = 15
+text = " Flores"
 icon = ExtResource("6_flower")
 expand_icon = true
 
-[node name="NightcapBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
+[node name="NightcapBtn" type="Button" parent="WardrobeModal/Content/ItemList"]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 16
-text = " Dormir (15 est.)"
+theme_override_font_sizes/font_size = 15
+text = " Dormir"
 icon = ExtResource("7_nightcap")
 expand_icon = true
 
-[node name="CrownBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
+[node name="CrownBtn" type="Button" parent="WardrobeModal/Content/ItemList"]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 16
-text = " Corona (25 est.)"
+theme_override_font_sizes/font_size = 15
+text = " Corona"
 icon = ExtResource("8_crown")
 expand_icon = true
 
-[node name="WizardBtn" type="Button" parent="WardrobeModal/VBox/Grid"]
+[node name="WizardBtn" type="Button" parent="WardrobeModal/Content/ItemList"]
 custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 16
-text = " Mago (35 est.)"
+theme_override_font_sizes/font_size = 15
+text = " Mago"
 icon = ExtResource("9_wizard")
 expand_icon = true
+
+[node name="PreviewSection" type="VBoxContainer" parent="WardrobeModal/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="PreviewHeader" type="Label" parent="WardrobeModal/Content/PreviewSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.7, 1)
+theme_override_font_sizes/font_size = 16
+text = "Probador del Zorrito"
+horizontal_alignment = 1
+
+[node name="PreviewCard" type="PanelContainer" parent="WardrobeModal/Content/PreviewSection"]
+custom_minimum_size = Vector2(250, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="PreviewRect" type="TextureRect" parent="WardrobeModal/Content/PreviewSection/PreviewCard"]
+custom_minimum_size = Vector2(240, 155)
+layout_mode = 2
+texture = ExtResource("10_prev_none")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PreviewTitle" type="Label" parent="WardrobeModal/Content/PreviewSection"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+text = "Al natural"
+horizontal_alignment = 1
+
+[node name="PreviewDesc" type="Label" parent="WardrobeModal/Content/PreviewSection"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.85, 0.85)
+theme_override_font_sizes/font_size = 13
+text = "El pelaje suave y libre del zorrito."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="ActionBtn" type="Button" parent="WardrobeModal/Content/PreviewSection"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Equipado ✓"
 
 [node name="CloseButton" type="Button" parent="WardrobeModal"]
 layout_mode = 1
@@ -266,11 +307,11 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -80.0
-offset_top = -52.0
-offset_right = 80.0
-offset_bottom = -16.0
+offset_left = -90.0
+offset_top = -48.0
+offset_right = 90.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 16
-text = "Cerrar"
+text = "Volver al Juego"

@@ -1,0 +1,60 @@
+[gd_resource type="SpriteFrames" load_steps=11 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_0.png" id="1_r0"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_1.png" id="2_r1"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_2.png" id="3_r2"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_3.png" id="4_r3"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_4.png" id="5_r4"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_5.png" id="6_r5"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_6.png" id="7_r6"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/run_7.png" id="8_r7"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/jump.png" id="9_jump"]
+[ext_resource type="Texture2D" path="res://assets/textures/outfits/nightcap/glide.png" id="10_glide"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_r0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_r1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_r2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_r3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_r4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_r5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_r6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_r7")
+}],
+"loop": true,
+"name": &"run",
+"speed": 11.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_jump")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_glide")
+}],
+"loop": false,
+"name": &"glide",
+"speed": 5.0
+}]

@@ -56,10 +56,10 @@ sprite_frames = ExtResource("2_frames")
 animation = &"run"
 autoplay = "run"
 
-[node name="Hat" type="Sprite2D" parent="Visuals"]
+[node name="Outfit" type="AnimatedSprite2D" parent="Visuals"]
 visible = false
-position = Vector2(24, -51)
-scale = Vector2(0.22, 0.22)
+position = Vector2(0, -32)
+scale = Vector2(0.55, 0.55)
 
 [node name="MagnetArea" type="Area2D" parent="."]
 collision_layer = 0
