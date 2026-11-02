@@ -39,6 +39,8 @@ func _ready() -> void:
 	
 	hud.mode_toggle_requested.connect(_on_mode_toggle_requested)
 	hud.hat_equipped.connect(_on_hat_equipped)
+	if hud.has_signal("item_equipped"):
+		hud.item_equipped.connect(_on_item_equipped)
 
 func _physics_process(delta: float) -> void:
 	# Cámara cinematográfica: jugador a la izquierda con visión amplia del cielo y colinas
@@ -75,6 +77,9 @@ func _on_fox_glided(seconds: float) -> void:
 
 func _on_hat_equipped(hat_id: String) -> void:
 	fox.equip_hat(hat_id)
+
+func _on_item_equipped(slot: String, item_id: String) -> void:
+	fox.equip_item(slot, item_id)
 
 func _on_mode_toggle_requested() -> void:
 	is_night = not is_night

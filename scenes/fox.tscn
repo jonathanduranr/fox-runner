@@ -56,7 +56,22 @@ sprite_frames = ExtResource("2_frames")
 animation = &"run"
 autoplay = "run"
 
-[node name="Outfit" type="AnimatedSprite2D" parent="Visuals"]
+[node name="Footwear" type="Sprite2D" parent="Visuals"]
+visible = false
+position = Vector2(0, -32)
+scale = Vector2(0.55, 0.55)
+
+[node name="Backpack" type="Sprite2D" parent="Visuals"]
+visible = false
+position = Vector2(0, -32)
+scale = Vector2(0.55, 0.55)
+
+[node name="Eyewear" type="Sprite2D" parent="Visuals"]
+visible = false
+position = Vector2(0, -32)
+scale = Vector2(0.55, 0.55)
+
+[node name="Hat" type="Sprite2D" parent="Visuals"]
 visible = false
 position = Vector2(0, -32)
 scale = Vector2(0.55, 0.55)

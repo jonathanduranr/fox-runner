@@ -15,19 +15,66 @@ var was_on_floor: bool = false
 var is_invulnerable: bool = false
 var glide_timer: float = 0.0
 
-var current_hat: String = "none"
-
-# SpriteFrames anatómicos pre-renderizados fotograma a fotograma para cada prenda/sombrero
-var outfit_frames: Dictionary = {
-	"crown": preload("res://scenes/outfit_crown.tres"),
-	"wizard": preload("res://scenes/outfit_wizard.tres"),
-	"flower": preload("res://scenes/outfit_flower.tres"),
-	"nightcap": preload("res://scenes/outfit_nightcap.tres"),
+# Ranuras de accesorios combinables (Gorros, Gafas, Mochilas, Zapatos)
+var equipped_slots: Dictionary = {
+	"hat": "none",
+	"eyewear": "none",
+	"backpack": "none",
+	"footwear": "none",
 }
+
+var current_hat: String:
+	get:
+		return equipped_slots["hat"]
+	set(val):
+		equip_item("hat", val)
+
+# Texturas oficiales de las 16 prendas en espacio anatómico de carrera
+var wardrobe_textures: Dictionary = {
+	# Gorros
+	"hat_royal_crown": preload("res://assets/textures/wardrobe/ingame/hat_royal_crown.png"),
+	"hat_flower_wreath": preload("res://assets/textures/wardrobe/ingame/hat_flower_wreath.png"),
+	"hat_party_hat": preload("res://assets/textures/wardrobe/ingame/hat_party_hat.png"),
+	"hat_feather_headband": preload("res://assets/textures/wardrobe/ingame/hat_feather_headband.png"),
+	
+	# Gafas
+	"eyewear_sunglasses": preload("res://assets/textures/wardrobe/ingame/eyewear_sunglasses.png"),
+	"eyewear_reading_glasses": preload("res://assets/textures/wardrobe/ingame/eyewear_reading_glasses.png"),
+	"eyewear_aviator_goggles": preload("res://assets/textures/wardrobe/ingame/eyewear_aviator_goggles.png"),
+	"eyewear_snorkel_mask": preload("res://assets/textures/wardrobe/ingame/eyewear_snorkel_mask.png"),
+	
+	# Mochilas
+	"backpack_hiking_backpack": preload("res://assets/textures/wardrobe/ingame/backpack_hiking_backpack.png"),
+	"backpack_messenger_satchel": preload("res://assets/textures/wardrobe/ingame/backpack_messenger_satchel.png"),
+	"backpack_school_backpack": preload("res://assets/textures/wardrobe/ingame/backpack_school_backpack.png"),
+	"backpack_star_backpack": preload("res://assets/textures/wardrobe/ingame/backpack_star_backpack.png"),
+	
+	# Zapatos
+	"footwear_colorful_sneakers": preload("res://assets/textures/wardrobe/ingame/footwear_colorful_sneakers.png"),
+	"footwear_winter_booties": preload("res://assets/textures/wardrobe/ingame/footwear_winter_booties.png"),
+	"footwear_adventurer_boots": preload("res://assets/textures/wardrobe/ingame/footwear_adventurer_boots.png"),
+	"footwear_roller_skates": preload("res://assets/textures/wardrobe/ingame/footwear_roller_skates.png"),
+}
+
+const STRIDE_BOB: Array = [
+	Vector2(0, 0),       # frame 0
+	Vector2(1.0, 0),     # frame 1 (extensión de zancada)
+	Vector2(0.5, -0.5),  # frame 2
+	Vector2(0, 2.5),     # frame 3 (compresión de pisada)
+	Vector2(0, 0),       # frame 4
+	Vector2(1.0, 0),     # frame 5 (extensión)
+	Vector2(0.5, 2.5),   # frame 6 (compresión)
+	Vector2(0, 0),       # frame 7
+]
 
 @onready var visuals: Node2D = $Visuals
 @onready var anim_sprite: AnimatedSprite2D = $Visuals/AnimSprite
-@onready var outfit_sprite: AnimatedSprite2D = $Visuals/Outfit
+@onready var slot_nodes: Dictionary = {
+	"footwear": $Visuals/Footwear,
+	"backpack": $Visuals/Backpack,
+	"eyewear": $Visuals/Eyewear,
+	"hat": $Visuals/Hat,
+}
 @onready var glide_particles: CPUParticles2D = $Visuals/GlideParticles
 @onready var night_aura: Sprite2D = $Visuals/NightAura
 @onready var night_light: PointLight2D = $NightLight
@@ -103,12 +150,24 @@ func update_visuals(delta: float) -> void:
 			var pitch = clamp(velocity.y / 600.0, -0.35, 0.35)
 			visuals.rotation = lerp_angle(visuals.rotation, pitch, 6.0 * delta)
 			
-	# Sincronizar prenda/sombrero fotograma a fotograma con el zorrito
-	if outfit_sprite and outfit_sprite.visible:
-		if outfit_sprite.animation != anim_sprite.animation:
-			outfit_sprite.animation = anim_sprite.animation
-		outfit_sprite.frame = anim_sprite.frame
-		outfit_sprite.speed_scale = anim_sprite.speed_scale
+	# Animar sincronía y rebote anatómico de todas las prendas equipadas
+	update_accessories_bob()
+
+func update_accessories_bob() -> void:
+	var base_pos = Vector2(0, -32)
+	var bob = Vector2.ZERO
+	if anim_sprite.animation == "run":
+		var f = anim_sprite.frame % STRIDE_BOB.size()
+		bob = STRIDE_BOB[f]
+	elif anim_sprite.animation == "jump":
+		bob = Vector2(0, 1.5)
+	elif anim_sprite.animation == "glide":
+		bob = Vector2(0.5, -1.0)
+		
+	for slot in slot_nodes.keys():
+		var node: Sprite2D = slot_nodes[slot]
+		if node and node.visible:
+			node.position = base_pos + bob
 
 func launch_spring(bounce_force: float = -680.0) -> void:
 	velocity.y = bounce_force
@@ -138,22 +197,26 @@ func stumble() -> void:
 		blink_tw.tween_property(visuals, "modulate:a", 1.0, 0.12)
 	blink_tw.tween_callback(func(): is_invulnerable = false)
 
-func equip_hat(hat_id: String) -> void:
-	current_hat = hat_id
-	if hat_id == "none" or not outfit_frames.has(hat_id):
-		outfit_sprite.visible = false
-		outfit_sprite.sprite_frames = null
+func equip_item(slot: String, item_id: String) -> void:
+	if not slot_nodes.has(slot):
+		return
+	equipped_slots[slot] = item_id
+	var node: Sprite2D = slot_nodes[slot]
+	var key = slot + "_" + item_id
+	if item_id == "none" or not wardrobe_textures.has(key):
+		node.visible = false
+		node.texture = null
 	else:
-		outfit_sprite.sprite_frames = outfit_frames[hat_id]
-		outfit_sprite.visible = true
-		outfit_sprite.animation = anim_sprite.animation
-		outfit_sprite.frame = anim_sprite.frame
-		outfit_sprite.speed_scale = anim_sprite.speed_scale
+		node.texture = wardrobe_textures[key]
+		node.visible = true
 		
 		# Animación suave y tierna al vestirse
-		visuals.scale = Vector2(1.12, 1.12)
+		visuals.scale = Vector2(1.08, 1.08)
 		var tw = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-		tw.tween_property(visuals, "scale", Vector2(1.0, 1.0), 0.22).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		tw.tween_property(visuals, "scale", Vector2(1.0, 1.0), 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+func equip_hat(hat_id: String) -> void:
+	equip_item("hat", hat_id)
 
 func _on_magnet_area_entered(area: Area2D) -> void:
 	if area is StarCollectible:
